@@ -4,11 +4,12 @@
 #include <iostream>
 #include "string"
 #include "limits"
+#include "vector"
 
 class Interpreter {
     std::string program;
-    unsigned char array[30000] = "\0";
     int pointer = 0;
+    std::vector<unsigned char> array = std::vector<unsigned char>(30000);
 
     public: Interpreter(std::string program)
     {
@@ -55,7 +56,9 @@ class Interpreter {
                     array[pointer]--; //TODO define decrement behavior above 255
                     break;
                 case '>':
-                    pointer++; //TODO define pointer behavior above array length (error or looping perhaps)
+                    if (pointer > array.size())
+                        array.resize(array.size()*2);
+                    pointer++;
                     break;
                 case '<':
                     pointer--; //TODO define pointer behavior below 0 (error or looping perhaps)

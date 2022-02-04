@@ -99,3 +99,6 @@
 2	583	6657171585346090	CMakeFiles/BFCompiler.dir/Interpreter.cpp.obj	ed4c3d70aa7c5824
 11	593	6657171585346090	CMakeFiles/BFCompiler.dir/main.cpp.obj	a6283e62e7f21682
 593	814	6657171587533621	BFCompiler.exe	3195463d49abc99c
+2	621	6657181275527826	CMakeFiles/BFCompiler.dir/Interpreter.cpp.obj	ed4c3d70aa7c5824
+12	640	6657181275684047	CMakeFiles/BFCompiler.dir/main.cpp.obj	a6283e62e7f21682
+641	847	6657181277871665	BFCompiler.exe	3195463d49abc99c
