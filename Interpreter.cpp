@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "string"
+#include "limits"
 
 class Interpreter {
     std::string program;
@@ -12,7 +13,34 @@ class Interpreter {
     public: Interpreter(std::string program)
     {
         this->program = program;
-        parseCode();
+    }
+
+    public: int run() {
+        if (checksumBrackets())
+        {
+            std::cout << "The generated program could not be interpreted as there is a problem with your bracket structure" << std::endl;
+            return -1;
+        }
+        return parseCode();
+    }
+
+    int checksumBrackets() {
+        int i = 0;
+        int sum = 0;
+        while (i < program.length() && sum >= 0) {
+            switch (program[i]) {
+                case '[':
+                    sum++;
+                    break;
+                case ']':
+                    sum--;
+                    break;
+                default:
+                    break;
+            }
+            i++;
+        }
+        return sum;
     }
 
     public: int parseCode()
@@ -33,22 +61,31 @@ class Interpreter {
                     pointer--; //TODO define pointer behavior below 0 (error or looping perhaps)
                     break;
                 case '.':
-                    std::cout << array[pointer] + 0x0; //TODO print in the same line, even after io flush
+                    std::cout << array[pointer]; //TODO print in the same line, even after io flush
                     break;
                 case ',':
-                    unsigned char buffer; //TODO define behavior when input is outside the ASCII table or multiple characters were input at once
+                    unsigned char buffer; //TODO define behavior when input is outside the ASCII table
                     std::cin >> buffer;
-                    array[pointer] = buffer - 0x0;
+                    array[pointer] = buffer;
                     break;
                 case '[':
-                    break; //TODO pending implementation
+                    if (!array[pointer]) {
+                        int layer = 1;
+                        while (layer += (program[++i] == '[' ? 1 : (program[i] == ']' ? -1 : 0)));
+                    }
+                    break;
                 case ']':
-                    break; //TODO pending implementation
+                    if (array[pointer]) {
+                        int layer = 1;
+                        while (layer += (program[--i] == '[' ? -1 : (program[i] == ']' ? 1 : 0)));
+                    }
+                    break;
                 default:
                     //Beyond the instruction characters everything is treated as a comment, and thus nothing is executed
                     break;
             }
             i++;
         }
+        return 0;
     }
 };

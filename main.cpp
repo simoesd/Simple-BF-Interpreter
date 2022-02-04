@@ -13,6 +13,7 @@ int main() {
     std::string filepath = "test.bf"; //TODO get filepath from command line
     std::string program = "+.,.>++.,.>+++.,.>++++.,.<<<-.,.>--.,.>---.,.>----.,.";
     Interpreter *interpreter = new Interpreter(program);
+    interpreter->run();
     return 0;
 }
 
