@@ -61,8 +61,11 @@ class Interpreter {
                     pointer++;
                     break;
                 case '<':
-                    if (!pointer)
-                        std::cout << "Execution exception: pointer moved out of bounds (below zero) at instruction [" << i+1 << "]." << std::endl;
+                    if (!pointer) {
+                        std::cout << "Execution exception: pointer moved out of bounds (below zero) at instruction ["
+                                  << i + 1 << "]." << std::endl;
+                        return -1;
+                    }
                     pointer--;
                     break;
                 case '.':
