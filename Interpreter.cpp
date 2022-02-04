@@ -61,7 +61,9 @@ class Interpreter {
                     pointer++;
                     break;
                 case '<':
-                    pointer--; //TODO define pointer behavior below 0 (error or looping perhaps)
+                    if (!pointer)
+                        std::cout << "Execution exception: pointer moved out of bounds (below zero) at instruction [" << i+1 << "]." << std::endl;
+                    pointer--;
                     break;
                 case '.':
                     std::cout << array[pointer]; //TODO print in the same line, even after io flush
