@@ -67,6 +67,7 @@ class Interpreter {
                     unsigned char buffer; //TODO define behavior when input is outside the ASCII table
                     std::cin >> buffer;
                     array[pointer] = buffer;
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
                     break;
                 case '[':
                     if (!array[pointer]) {
