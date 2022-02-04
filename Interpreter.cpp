@@ -8,6 +8,7 @@ class Interpreter {
     std::string program;
     int pointer = 0;
     std::vector<unsigned char> array = std::vector<unsigned char>(30000);
+    int errorAtInstruction = 0;
 
     public: explicit Interpreter(std::string program)
     {
@@ -15,9 +16,14 @@ class Interpreter {
     }
 
     public: int run() {
-        if (checksumBrackets())
-        {
-            std::cout << "The generated program could not be interpreted as there is a problem with your bracket structure" << std::endl;
+        int bracketCode = checksumBrackets();
+        if (bracketCode > 0) {
+            std::cout << "The generated program could not be interpreted as there is a problem with your bracket structure. Perhaps you forgot to close a loop? (Instruction ["
+                << errorAtInstruction << "])." << std::endl;
+            return -1;
+        } else if (bracketCode) {
+            std::cout << "The generated program could not be interpreted as there is a problem with your bracket structure. Perhaps you forgot to open a loop? (Instruction ["
+                << errorAtInstruction << "])." << std::endl;
             return -1;
         }
         return parseCode();
@@ -39,6 +45,7 @@ class Interpreter {
             }
             i++;
         }
+        errorAtInstruction = i;
         return sum;
     }
 
@@ -60,8 +67,9 @@ class Interpreter {
                     break;
                 case '<':
                     if (!pointer) {
-                        std::cout << "Execution exception: pointer moved out of bounds (below zero) at instruction ["
-                                  << i + 1 << "]." << std::endl;
+                        errorAtInstruction = i + 1;
+                        std::cout << "Execution exception: pointer moved out of bounds (below zero)- (Instruction ["
+                                  << errorAtInstruction << "])." << std::endl;
                         return -1;
                     }
                     pointer--;

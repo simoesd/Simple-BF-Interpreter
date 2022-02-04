@@ -30,9 +30,6 @@
 *.exe
 *.out
 *.app
-cmake-build-debug/.ninja_deps
-cmake-build-debug/.ninja_log
+cmake-build-*/
 *.log
 *.log
-cmake-build-debug/.ninja_deps
-cmake-build-debug/.ninja_log
