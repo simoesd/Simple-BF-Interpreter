@@ -1,7 +1,5 @@
-//
-// Created by David on 04-Feb-22.
-//
-#include <iostream>
+#include "iostream"
+#include "utility"
 #include "string"
 #include "limits"
 #include "vector"
@@ -11,9 +9,9 @@ class Interpreter {
     int pointer = 0;
     std::vector<unsigned char> array = std::vector<unsigned char>(30000);
 
-    public: Interpreter(std::string program)
+    public: explicit Interpreter(std::string program)
     {
-        this->program = program;
+        this->program = std::move(program);
     }
 
     public: int run() {
@@ -53,7 +51,7 @@ class Interpreter {
                     array[pointer]++; //TODO define increment behavior above 255
                     break;
                 case '-':
-                    array[pointer]--; //TODO define decrement behavior above 255
+                    array[pointer]--; //TODO define decrement behavior below 255
                     break;
                 case '>':
                     if (pointer > array.size())
