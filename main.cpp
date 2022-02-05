@@ -13,12 +13,11 @@
 int main(int argc, char **argv) {
     std::cout << "Compiling and executing code" << std::endl;
 
-    std::string filepath = argv[1]; //TODO get filepath from command line
+    std::string filepath = argv[1];
     std::ifstream t(filepath);
     std::stringstream buffer;
     buffer << t.rdbuf();
     std::string program = buffer.str();
-//    std::string program = "+.,.>++.,.>+++.,.>++++.,.<<<-.,.>--.,.>---.,.>----.,.";
 
     Interpreter *interpreter = new Interpreter(program);
     return interpreter->run();
