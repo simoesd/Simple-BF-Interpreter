@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <filesystem>
 #include "Interpreter.cpp"
 
 //"+" and "-": increment and decrement currently selected byte
@@ -8,12 +10,18 @@
 //"[" and "]": define the start and end of a cycle block. Skip the block if the current byte is 0 at the start
 
 
-int main() {
+int main(int argc, char **argv) {
     std::cout << "Compiling and executing code" << std::endl;
-    std::string filepath = "test.bf"; //TODO get filepath from command line
-    std::string program = "+.,.>++.,.>+++.,.>++++.,.<<<-.,.>--.,.>---.,.>----.,.";
+
+    std::string filepath = argv[1]; //TODO get filepath from command line
+    std::ifstream t(filepath);
+    std::stringstream buffer;
+    buffer << t.rdbuf();
+    std::string program = buffer.str();
+//    std::string program = "+.,.>++.,.>+++.,.>++++.,.<<<-.,.>--.,.>---.,.>----.,.";
+
     Interpreter *interpreter = new Interpreter(program);
-    return interpreter->run();;
+    return interpreter->run();
 }
 
 
