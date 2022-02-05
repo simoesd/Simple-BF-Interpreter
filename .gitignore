@@ -33,3 +33,4 @@
 cmake-build-*/
 *.log
 *.log
+test.bf
