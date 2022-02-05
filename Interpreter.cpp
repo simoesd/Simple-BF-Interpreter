@@ -18,11 +18,11 @@ class Interpreter {
     public: int run() {
         int bracketCode = checksumBrackets();
         if (bracketCode > 0) {
-            std::cout << "The generated program could not be interpreted as there is a problem with your bracket structure. Perhaps you forgot to close a loop? (Instruction ["
+            std::cout << "Interpretation Exception: Invalid bracket structure. Perhaps you forgot to close a loop? (Instruction ["
                 << errorAtInstruction << "])." << std::endl;
             return -1;
         } else if (bracketCode) {
-            std::cout << "The generated program could not be interpreted as there is a problem with your bracket structure. Perhaps you forgot to open a loop? (Instruction ["
+            std::cout << "Interpretation Exception: Invalid bracket structure. Perhaps you forgot to open a loop? (Instruction ["
                 << errorAtInstruction << "])." << std::endl;
             return -1;
         }
@@ -55,10 +55,22 @@ class Interpreter {
         while (i < program.length()) {
             switch (program[i]) {
                 case '+':
-                    array[pointer]++; //TODO define increment behavior above 255
+                    if (array[pointer] == 255) {
+                        errorAtInstruction = i + 1;
+                        std::cout << "Execution exception: Value incremented above 255. (Instruction ["
+                                  << errorAtInstruction << "])." << std::endl;
+                        return -1;
+                    }
+                    array[pointer]++;
                     break;
                 case '-':
-                    array[pointer]--; //TODO define decrement behavior below 255
+                    if (!array[pointer]) {
+                        errorAtInstruction = i + 1;
+                        std::cout << "Execution exception: Value decremented below 0. (Instruction ["
+                                  << errorAtInstruction << "])." << std::endl;
+                        return -1;
+                    }
+                    array[pointer]--;
                     break;
                 case '>':
                     if (pointer > array.size())
@@ -68,7 +80,7 @@ class Interpreter {
                 case '<':
                     if (!pointer) {
                         errorAtInstruction = i + 1;
-                        std::cout << "Execution exception: pointer moved out of bounds (below zero)- (Instruction ["
+                        std::cout << "Execution exception: Pointer moved out of bounds (below zero). (Instruction ["
                                   << errorAtInstruction << "])." << std::endl;
                         return -1;
                     }
@@ -78,8 +90,14 @@ class Interpreter {
                     std::cout << array[pointer]; //TODO print in the same line, even after io flush
                     break;
                 case ',':
-                    unsigned char buffer; //TODO define behavior when input is outside the ASCII table
+                    unsigned char buffer;
                     std::cin >> buffer;
+                    if (buffer < 0 || buffer > 255){
+                        errorAtInstruction = i + 1;
+                        std::cout << "Execution exception: Read value must be part of the ASCII table. (Instruction ["
+                                  << errorAtInstruction << "])." << std::endl;
+                        return -1;
+                    }
                     array[pointer] = buffer;
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
                     break;
